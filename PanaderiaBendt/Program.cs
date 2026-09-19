@@ -1,3 +1,5 @@
+using PanaderiaBendt.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,5 +24,10 @@ app.MapControllerRoute(
         pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<PanaderiaDbContext>();
+    PanaderiaDbContext.Seed(context);
+}
 
 app.Run();
