@@ -67,7 +67,7 @@ public sealed class Cola<T> : ICola<T>
             throw new NotImplementedException("No hay elementos para devolver!");
         }
 
-        List<T> listReturn = new List<T>();
+        List<T> listReturn = [];
         int x = _start;
         for (int i = 0; i < _quantityElements; i++)
         {

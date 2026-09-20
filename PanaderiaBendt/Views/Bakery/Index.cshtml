@@ -1,0 +1,175 @@
+@using PanaderiaBendt.Models.classes.DateStructures
+@{
+    ViewData["Title"] = "Panadería Tarijeña - Control de Pedidos";
+    var products = ViewBag.Products as List<PanaderiaBendt.Models.classes.Product>;
+    var customers = ViewBag.Customers as List<PanaderiaBendt.Models.classes.Customer>;
+    var queue = ViewBag.Queue as Cola<PanaderiaBendt.Models.classes.Order>;
+    var stack = ViewBag.Stack as Pila<string>;
+    var linkedList = ViewBag.LinkedList as ListaEnlazada<PanaderiaBendt.Models.classes.Order>;
+}
+
+<div class="container my-4">
+    <h2 class="text-center text-primary mb-4">🥐 Panadería Tradicional Tarijeña - Gestión de Datos</h2>
+
+    <!-- SECCIÓN 1: NUEVO PEDIDO -->
+    <div class="card mb-4 border-primary">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">➕ Crear Nuevo Pedido (Guardar en DB y poner en COLA)</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateOrder" method="post" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Cliente</label>
+                    <select name="customerId" class="form-select" required>
+                        @if (customers != null)
+                        {
+                            @foreach (var c in customers)
+                            {
+                                <option value="@c.Id">@c.FullName (@c.Address)</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Producto Tradicional</label>
+                    <select name="productId" class="form-select" required>
+                        @if (products != null)
+                        {
+                            @foreach (var p in products)
+                            {
+                                <option value="@p.Id">@p.Name - @p.Price Bs.</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Cantidad</label>
+                    <input type="number" name="quantity" class="form-content form-control" value="1" min="1" required />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100">Registrar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECCIÓN 2: ESTRUCTURAS DE DATOS EN VIVO -->
+    <div class="row g-4">
+        
+        <!-- 1. COLA (Queue) -->
+        <div class="col-md-4">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">📥 Cola de Despacho (FIFO)</h5>
+                    <form asp-action="ProcessQueue" method="post">
+                        <button type="submit" class="btn btn-dark btn-sm" @(queue == null || queue.Count() == 0 ? "disabled" : "")>
+                            Atender Siguiente
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">El primero en entrar es el primero en ser despachado en el mostrador.</p>
+                    @if (queue != null && queue.Count() > 0)
+                    {
+                        <ul class="list-group">
+                            @foreach (var order in queue.ElementsNow())
+                            {
+                                <list-item class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Pedido #@order.Id</strong> - Total: @order.TotalAmount Bs.<br />
+                                        <small class="text-secondary">Cliente ID: @order.CustomerId</small>
+                                    </div>
+                                    <div class="btn-group-vertical">
+                                        <form asp-action="AddToDelivery" method="post" style="display:inline;">
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <button type="submit" class="btn btn-outline-primary btn-sm mb-1">+ Delivery Normal</button>
+                                        </form>
+                                        <form asp-action="AddUrgentDelivery" method="post" style="display:inline;">
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">🚨 Urgente</button>
+                                        </form>
+                                    </div>
+                                </list-item>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="alert alert-light text-center">La cola está vacía.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. LISTA ENLAZADA (LinkedList) -->
+        <div class="col-md-4">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">🛵 Ruta Delivery (LinkedList)</h5>
+                    <form asp-action="CompleteDelivery" method="post">
+                        <button type="submit" class="btn btn-light btn-sm" @(linkedList == null || linkedList.Cantidad() == 0 ? "disabled" : "")>
+                            Completar Parada
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">Paradas dinámicas. Permite insertar urgencias al inicio de la lista.</p>
+                    @if (linkedList != null && linkedList.Cantidad() > 0)
+                    {
+                        <ol class="list-group list-group-numbered">
+                            @{ var actual = linkedList.Inicio; }
+                            @while (actual is not null)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">Pedido #@actual.Valor.Id</div>
+                                        <small>📍 @actual.Valor.DeliveryAddress</small>
+                                    </div>
+                                    <span class="badge bg-info rounded-pill">@actual.Valor.TotalAmount Bs.</span>
+                                </li>
+                                @{ actual = actual.Siguiente; }
+                            }
+                        </ol>
+                    }
+                    else
+                    {
+                        <div class="alert alert-light text-center">No hay paradas en la ruta.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. PILA (Stack) -->
+        <div class="col-md-4">
+            <div class="card h-100 border-secondary">
+                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">📜 Historial / Pila (LIFO)</h5>
+                    <form asp-action="UndoAction" method="post">
+                        <button type="submit" class="btn btn-warning btn-sm" @(stack == null || stack.Count() == 0 ? "disabled" : "")>
+                            Deshacer Último
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">Última acción realizada queda arriba de la pila.</p>
+                    @if (stack != null && stack.Count() > 0)
+                    {
+                        <ul class="list-group">
+                            @* @foreach (var log in stack) *@
+                            @* { *@
+                                <li class="list-group-item list-group-item-secondary small">
+                                    @stack.Peek()
+                                </li>
+                            @* } *@
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="alert alert-light text-center">Sin historial de acciones.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
