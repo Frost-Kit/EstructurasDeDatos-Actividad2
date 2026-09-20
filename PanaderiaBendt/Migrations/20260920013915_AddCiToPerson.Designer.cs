@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PanaderiaBendt.Data;
 
@@ -10,9 +11,11 @@ using PanaderiaBendt.Data;
 namespace PanaderiaBendt.Migrations
 {
     [DbContext(typeof(PanaderiaDbContext))]
-    partial class PanaderiaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260920013915_AddCiToPerson")]
+    partial class AddCiToPerson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.12");

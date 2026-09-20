@@ -35,6 +35,10 @@ public class PanaderiaDbContext : DbContext
             entity.Property(c => c.FullName)
                 .IsRequired()
                 .HasMaxLength(100);
+            
+            entity.Property(c => c.Ci)
+                .IsRequired()
+                .HasMaxLength(14);
 
             entity.Property(c => c.PhoneNumber)
                 .IsRequired()
@@ -150,8 +154,9 @@ public class PanaderiaDbContext : DbContext
 
         if (!context.Customers.Any())
         {
-            context.Customers.Add(
-                new Customer { FullName = "María Benítez", PhoneNumber = "71234567", Address = "Barrio San Roque", BirthDate = new DateTime(1995, 4, 15) }
+            context.Customers.AddRange(
+                new Customer { FullName = "María Benítez", Ci = "4568728", PhoneNumber = "71234567", Address = "Barrio San Roque", BirthDate = new DateTime(1995, 4, 15) },
+                new Customer { FullName = "Lucía Aramayo", Ci = "9547627", PhoneNumber = "71239876", Address = "Barrio El Molino", BirthDate = new DateTime(1998, 6, 21) }
             );
         }
 
