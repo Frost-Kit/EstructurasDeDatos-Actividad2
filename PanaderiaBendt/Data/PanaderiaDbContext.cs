@@ -146,9 +146,9 @@ public class PanaderiaDbContext : DbContext
         if (!context.Products.Any())
         {
             context.Products.AddRange(
-                new Product { Name = "Rosquete Tradicional Tarijeño", Description = "Rosquete glaseado artesanal de San Lorenzo", Price = 2.50m, StockQuantity = 100 },
+                new Product { Name = "Rosquete", Description = "Rosquete glaseado artesanal de San Lorenzo", Price = 4.50m, StockQuantity = 100 },
                 new Product { Name = "Empanada Blanqueada", Description = "Empanada dulce con blanqueado de clara de huevo", Price = 3.00m, StockQuantity = 80 },
-                new Product { Name = "Hojaldra", Description = "Hojaldra tradicional crocante", Price = 2.00m, StockQuantity = 50 }
+                new Product { Name = "Hojarasca", Description = "Hojarasca tradicional crocante y con relleno de dulce de leche", Price = 2.00m, StockQuantity = 50 }
             );
         }
 
