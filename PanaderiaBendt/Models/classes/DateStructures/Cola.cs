@@ -62,12 +62,13 @@ public sealed class Cola<T> : ICola<T>
 
     public ICollection<T> ElementsNow()
     {
+        List<T> listReturn = [];
+        
         if (IsEmpty())
         {
-            throw new NotImplementedException("No hay elementos para devolver!");
+            return listReturn;
         }
 
-        List<T> listReturn = [];
         int x = _start;
         for (int i = 0; i < _quantityElements; i++)
         {

@@ -4,12 +4,12 @@
     var products = ViewBag.Products as List<PanaderiaBendt.Models.classes.Product>;
     var customers = ViewBag.Customers as List<PanaderiaBendt.Models.classes.Customer>;
     var queue = ViewBag.Queue as Cola<PanaderiaBendt.Models.classes.Order>;
-    var stack = ViewBag.Stack as Pila<string>;
+    var stack = ViewBag.Stack as List<string>;
     var linkedList = ViewBag.LinkedList as ListaEnlazada<PanaderiaBendt.Models.classes.Order>;
 }
 
 <div class="container my-4">
-    <h2 class="text-center text-primary mb-4">🥐 Panadería Tradicional Tarijeña - Gestión de Datos</h2>
+    <h2 class="text-center text-primary mb-4">🥐 Panadería Bendt - Gestión de Datos 🥐</h2>
 
     <!-- SECCIÓN 1: NUEVO PEDIDO -->
     <div class="card mb-4 border-primary">
@@ -60,7 +60,7 @@
         <div class="col-md-4">
             <div class="card h-100 border-warning">
                 <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">📥 Cola de Despacho (FIFO)</h5>
+                    <h5 class="mb-0">Cola de Despacho (FIFO)</h5>
                     <form asp-action="ProcessQueue" method="post">
                         <button type="submit" class="btn btn-dark btn-sm" @(queue == null || queue.Count() == 0 ? "disabled" : "")>
                             Atender Siguiente
@@ -105,7 +105,7 @@
         <div class="col-md-4">
             <div class="card h-100 border-info">
                 <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">🛵 Ruta Delivery (LinkedList)</h5>
+                    <h5 class="mb-0">Ruta Delivery (LinkedList)</h5>
                     <form asp-action="CompleteDelivery" method="post">
                         <button type="submit" class="btn btn-light btn-sm" @(linkedList == null || linkedList.Cantidad() == 0 ? "disabled" : "")>
                             Completar Parada
@@ -127,7 +127,7 @@
                                     </div>
                                     <span class="badge bg-info rounded-pill">@actual.Valor.TotalAmount Bs.</span>
                                 </li>
-                                @{ actual = actual.Siguiente; }
+                                actual = actual.Siguiente;
                             }
                         </ol>
                     }
@@ -143,7 +143,7 @@
         <div class="col-md-4">
             <div class="card h-100 border-secondary">
                 <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">📜 Historial / Pila (LIFO)</h5>
+                    <h5 class="mb-0">Historial / Pila (LIFO)</h5>
                     <form asp-action="UndoAction" method="post">
                         <button type="submit" class="btn btn-warning btn-sm" @(stack == null || stack.Count() == 0 ? "disabled" : "")>
                             Deshacer Último
@@ -155,12 +155,12 @@
                     @if (stack != null && stack.Count() > 0)
                     {
                         <ul class="list-group">
-                            @* @foreach (var log in stack) *@
-                            @* { *@
+                            @foreach (var log in stack)
+                            {
                                 <li class="list-group-item list-group-item-secondary small">
-                                    @stack.Peek()
+                                    @log
                                 </li>
-                            @* } *@
+                            }
                         </ul>
                     }
                     else

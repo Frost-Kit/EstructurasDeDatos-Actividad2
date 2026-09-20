@@ -14,7 +14,9 @@ public sealed class Pila<T> : IPila<T>
 
     public bool IsEmpty() => _index == -1;
     public bool IsFull() => _index == Size() - 1;
-
+    public int Size() => _elements.Length;
+    public int Count() => _index + 1;
+    
     public T Peek()
     {
         if (IsEmpty())
@@ -43,8 +45,15 @@ public sealed class Pila<T> : IPila<T>
 
         _elements[++_index] = element;
     }
-
-    public int Size() => _elements.Length;
-
-    public int Count() => _index + 1;
+    
+    public List<T> ToList()
+    {
+        List<T> list = [];
+        
+        for (int i = _index; i >= 0; i--)
+        {
+            list.Add(_elements[i]);
+        }
+        return list;
+    }
 }

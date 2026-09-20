@@ -26,13 +26,13 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}")
+        pattern: "{controller=Bakery}/{action=Index}/{id?}")
     .WithStaticAssets();
-//
-// using (var scope = app.Services.CreateScope())
-// {
-//     var context = scope.ServiceProvider.GetRequiredService<PanaderiaDbContext>();
-//     PanaderiaDbContext.Seed(context);
-// }
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<PanaderiaDbContext>();
+    PanaderiaDbContext.Seed(context);
+}
 
 app.Run();
