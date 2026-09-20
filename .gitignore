@@ -664,4 +664,9 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+### Mee ###
+# DB temp archives
+*.db-wal
+*.db-shm
+
 # End of https://www.toptal.com/developers/gitignore/api/linux,rider,visualstudio,visualstudiocode,windows,dotnetcore,aspnetcore
