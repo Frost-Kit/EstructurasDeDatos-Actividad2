@@ -10,7 +10,7 @@ public class PanaderiaDbContext : DbContext
     {
     }
 
-    // Definimos las tablas de la base de datos
+    // aqui tan las tablas de la base de datos
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
@@ -138,7 +138,7 @@ public class PanaderiaDbContext : DbContext
         // pa asegurar que la base de datos esté creada
         context.Database.EnsureCreated();
 
-        // Si no hay productos, pos los crea algunos datos de prueba
+        // si no hay productos, pos los crea algunos datos de prueba
         if (!context.Products.Any())
         {
             context.Products.AddRange(

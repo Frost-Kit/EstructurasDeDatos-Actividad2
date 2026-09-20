@@ -1,9 +1,14 @@
+using Microsoft.EntityFrameworkCore;
 using PanaderiaBendt.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// pa conectar a la DB... (tengo Fe)
+builder.Services.AddDbContext<PanaderiaDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -23,11 +28,11 @@ app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<PanaderiaDbContext>();
-    PanaderiaDbContext.Seed(context);
-}
+//
+// using (var scope = app.Services.CreateScope())
+// {
+//     var context = scope.ServiceProvider.GetRequiredService<PanaderiaDbContext>();
+//     PanaderiaDbContext.Seed(context);
+// }
 
 app.Run();
