@@ -1,7 +1,7 @@
 @using PanaderiaBendt.Models.classes
 @using PanaderiaBendt.Models.classes.DateStructures
 @{
-    ViewData["Title"] = "Panadería Tarijeña - Control de Pedidos";
+    ViewData["Title"] = "Panadería Bendt - Control de Pedidos";
     var products = ViewBag.Products as List<Product>;
     var customers = ViewBag.Customers as List<Customer>;
     
@@ -84,10 +84,16 @@
                                         <strong>Pedido #@order.Id</strong><br />
                                         <small class="text-secondary">Monto: @order.TotalAmount Bs.</small>
                                     </div>
-                                    <form asp-action="AddToDelivery" method="post">
-                                        <input type="hidden" name="orderId" value="@order.Id" />
-                                        <button type="submit" class="btn btn-outline-primary btn-sm">+ Ruta</button>
-                                    </form>
+                                    <div class="btn-group-vertical">
+                                        <form asp-action="AddToDelivery" method="post" style="display:inline;">
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <button type="submit" class="btn btn-outline-primary btn-sm mb-1">+ Delivery Normal</button>
+                                        </form>
+                                        <form asp-action="AddUrgentDelivery" method="post" style="display:inline;">
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">🚨 Urgente</button>
+                                        </form>
+                                    </div>
                                 </li>
                             }
                         </ul>
@@ -246,7 +252,7 @@
                         </div>
                     </form>
 
-                    @if (promosList != null && !promosList.EsVacia())
+                    @if (!promosList.EsVacia())
                     {
                         <div class="alert alert-success mb-0 text-center">
                             <strong>@promosList.Cantidad() producto(s) en carrusel circular.</strong><br />

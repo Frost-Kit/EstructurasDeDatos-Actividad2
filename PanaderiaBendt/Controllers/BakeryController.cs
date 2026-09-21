@@ -98,6 +98,19 @@ public class BakeryController : Controller
 
         return RedirectToAction("Index");
     }
+    
+    [HttpPost]
+    public IActionResult AddUrgentDelivery(int orderId)
+    {
+        var order = _context.Orders.Include(o => o.Customer).FirstOrDefault(o => o.Id == orderId);
+        if (order != null)
+        {
+            MemoryStore.DeliveryRoute.AgregarInicio(order);
+            MemoryStore.ActionHistory.Push($"[{DateTime.Now:HH:mm:ss}] Pedido #{order.Id} añadido a la RUTA ¡URGENTE!.");
+        }
+
+        return RedirectToAction("Index");
+    }
 
     [HttpPost]
     public IActionResult CompleteDelivery()
