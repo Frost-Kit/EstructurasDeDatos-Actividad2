@@ -19,8 +19,7 @@ Proyecto desarrollado en **ASP.NET Core MVC (.NET 10)** para la materia **Estruc
 ├── Controllers/
 │   ├── BakeryController.cs       # Gestión de colas, pilas y listas
 │   ├── CustomerController.cs     # Gestión de clientes
-│   ├── ProductController.cs      # Gestión de catálogo de productos
-│   └── HomeController.cs         # Controlador principal
+│   └── ProductController.cs      # Gestión de catálogo de productos
 ├── Data/
 │   ├── MemoryStore.cs            # Instancias globales de las estructuras en memoria
 │   └── PanaderiaDbContext.cs     # Contexto de Entity Framework Core
