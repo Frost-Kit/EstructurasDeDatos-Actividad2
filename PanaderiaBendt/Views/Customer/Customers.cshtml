@@ -11,7 +11,7 @@
     <section class="col-lg-4">
         <div class="card shadow-sm border-0 rounded-3">
             <div class="card-body p-4">
-                <h3 class="card-title h4 mb-3">Agregar nuevo Cliente</h3>
+                <h3 class="card-title h3 mb-3">Agregar nuevo Cliente</h3>
 
                 <form asp-controller="Customer" asp-action="NewCustomer" method="post">
                     <fieldset class="mb-3">
@@ -42,7 +42,7 @@
                     </fieldset>
 
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary fw-bold" type="submit">Guardar</button>
+                        <button class="btn btn-success fw-bold" type="submit">Guardar</button>
                         <a asp-controller="Bakery" asp-action="Index" class="btn btn-outline-secondary">Volver al menú principal</a>
                     </div>
                 </form>
@@ -73,10 +73,21 @@
                             <tr>
                                 <td class="fw-semibold">@cus.FullName</td>
                                 <td>@cus.Ci</td>
-                                <td>@cus.PhoneNumber</td>
-                                <td>@cus.Address</td>
-                                <td>@(cus.BirthDate.HasValue ? cus.BirthDate.Value.ToString("dd/MM/yyyy") : "-")</td>
+                                <td>@(string.IsNullOrEmpty(cus.PhoneNumber) ? "-" : cus.PhoneNumber)</td>
+                                <td class="text-muted">@(string.IsNullOrEmpty(cus.Address) ? "-" : cus.Address)</td>
+                                <td>
+                                    @if (cus.BirthDate.HasValue)
+                                    {
+                                        <span class="badge bg-light text-dark border px-2 py-1">@cus.BirthDate.Value.ToString("dd/MM/yyyy")
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
                             </tr>
+                            
                         }
                     }
                     else
