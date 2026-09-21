@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/PanaderiaBendt.styles.css" asp-append-version="true"/>
 </head>
-<body>
+<body style="background-color: #f1f5f9">
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3"
+         style="background-color: #1e293b;">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PanaderiaBendt</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,10 +22,10 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                 </ul>
             </div>
@@ -37,9 +38,11 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer text-light overflow-y-auto" style="background-color: #1e293b">
     <div class="container">
-        &copy; 2026 - PanaderiaBendt - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <p style="margin: 0;padding: 0">&copy; 2026 - Estructuras de datos - Actividad 3 - <strong>UPDS</strong> - Cristhian Leonardo Flores Carballo
+            | <a asp-area="" asp-controller="Home" asp-action="Privacy" style="color: #38bdf8; margin: 0;padding: 0">Privacy</a>
+        </p>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
