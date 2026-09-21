@@ -16,6 +16,10 @@ public class PanaderiaDbContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
 
+    /// <summary>
+    /// pa darle limites a la DB, y algunas props
+    /// </summary>
+    /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -137,12 +141,15 @@ public class PanaderiaDbContext : DbContext
         });
     }
     
+    /// <summary>
+    /// si no hay productos, pos los crea algunos datos de prueba
+    /// </summary>
+    /// <param name="context"></param>
     public static void Seed(PanaderiaDbContext context)
     {
         // pa asegurar que la base de datos esté creada
         context.Database.EnsureCreated();
 
-        // si no hay productos, pos los crea algunos datos de prueba
         if (!context.Products.Any())
         {
             context.Products.AddRange(
@@ -155,6 +162,7 @@ public class PanaderiaDbContext : DbContext
         if (!context.Customers.Any())
         {
             context.Customers.AddRange(
+                new Customer { FullName = "Anonimo", Ci = "0000000", PhoneNumber = "00000000", Address = "SIN DELIVERY", BirthDate = new DateTime(1, 1, 1) }, // para clientes que no se quieran registrar
                 new Customer { FullName = "María Benítez", Ci = "4568728", PhoneNumber = "71234567", Address = "Barrio San Roque", BirthDate = new DateTime(1995, 4, 15) },
                 new Customer { FullName = "Lucía Aramayo", Ci = "9547627", PhoneNumber = "71239876", Address = "Barrio El Molino", BirthDate = new DateTime(1998, 6, 21) }
             );

@@ -13,7 +13,11 @@ public class BakeryController : Controller
     {
         _context = context;
     }
-
+    
+    /// <summary>
+    /// Para cargar la vista/pagina principal
+    /// </summary>
+    /// <returns>un view</returns>
     public async Task<IActionResult> Index()
     {
         ViewBag.Products = await _context.Products.ToListAsync();
@@ -32,6 +36,13 @@ public class BakeryController : Controller
     // =========================================================
     // 1. COLA & PILA
     // =========================================================
+    /// <summary>
+    /// Crear una nueva orden, guardarla en la DB con el context, y la "encuela" en PendingOrders
+    /// </summary>
+    /// <param name="customerId"></param>
+    /// <param name="productId"></param>
+    /// <param name="quantity"></param>
+    /// <returns>nada ejecuta y vuelve la view principal</returns>
     [HttpPost]
     public async Task<IActionResult> CreateOrder(int customerId, int productId, int quantity)
     {
@@ -58,7 +69,11 @@ public class BakeryController : Controller
 
         return RedirectToAction("Index");
     }
-
+    
+    /// <summary>
+    /// Desencolar al pedido u orden si se le atendio en la tienda
+    /// </summary>
+    /// <returns>nada ejecuta y vuelve la view principal</returns>
     [HttpPost]
     public IActionResult ProcessQueue()
     {
