@@ -1,0 +1,93 @@
+@using PanaderiaBendt.Models.classes
+@model Product
+
+@{
+    ViewData["Title"] = "Panadería Bendt - Productos";
+    var products = ViewBag.ActualProducts as List<Product>;
+}
+
+<div class="row pt-4 g-4">
+    <!-- Formulario de Agregar Producto -->
+    <section class="col-12">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <h2 class="card-title h3 mb-4">Agregar nuevo Producto</h2>
+
+                <form asp-controller="Product" asp-action="NewProduct" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-3">
+                            <label asp-for="Name" class="form-label fw-semibold">Nombre Completo</label>
+                            <input class="form-control" asp-for="Name" type="text" placeholder="Ej: Pan de Peso" required />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <label asp-for="Description" class="form-label fw-semibold">Descripción</label>
+                            <input class="form-control" asp-for="Description" type="text" placeholder="Ingrese la descripción del producto" />
+                        </div>
+
+                        <div class="col-md-6 col-lg-2">
+                            <label asp-for="Price" class="form-label fw-semibold">Precio (Bs)</label>
+                            <input class="form-control" asp-for="Price" type="number" step="0.01" min="0" placeholder="0.00" required />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 col-lg-3">
+                            <label asp-for="StockQuantity" class="form-label fw-semibold">Stock Disponible</label>
+                            <input class="form-control" asp-for="StockQuantity" type="number" min="1" placeholder="1" required />
+                            <span asp-validation-for="StockQuantity" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                            <a asp-controller="Bakery" asp-action="Index" class="btn btn-outline-secondary">Volver al menú principal</a>
+                            <button class="btn btn-primary fw-bold px-4" type="submit">Guardar Producto</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabla de Productos -->
+    <section class="col-12">
+        <h3 class="h4 mb-3">Lista de Productos</h3>
+
+        <div class="table-responsive rounded-3 border shadow-sm overflow-hidden bg-white">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col" class="py-3">Nombre</th>
+                        <th scope="col" class="py-3">Precio (Bs)</th>
+                        <th scope="col" class="py-3">Stock Disponible</th>
+                        <th scope="col" class="py-3">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (products != null && products.Any())
+                    {
+                        @foreach (var pro in products)
+                        {
+                            <tr>
+                                <td class="fw-medium">@pro.Name</td>
+                                <td class="fw-bold text-success">@pro.Price.ToString("F2")</td>
+                                <td>
+                                    <span class="badge @(pro.StockQuantity > 5 ? "bg-success-subtle text-success-emphasis" : "bg-warning-subtle text-warning-emphasis") px-2 py-1">
+                                        @pro.StockQuantity unidades
+                                    </span>
+                                </td>
+                                <td class="text-muted">@pro.Description</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">No hay productos registrados aún.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

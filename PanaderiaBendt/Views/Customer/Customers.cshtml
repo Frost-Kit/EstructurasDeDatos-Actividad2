@@ -1,0 +1,92 @@
+@using PanaderiaBendt.Models.classes
+@model Customer
+
+@{
+    ViewData["Title"] = "Panadería Bendt - Clientes";
+    var customers = ViewBag.ActualCustomers as List<Customer>;
+}
+
+<div class="row pt-4 g-4">
+    <!-- Formulario de Agregar Cliente -->
+    <section class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <h3 class="card-title h4 mb-3">Agregar nuevo Cliente</h3>
+
+                <form asp-controller="Customer" asp-action="NewCustomer" method="post">
+                    <fieldset class="mb-3">
+                        <label asp-for="FullName" class="form-label font-weight-bold">Nombre Completo</label>
+                        <input class="form-control" asp-for="FullName" type="text" placeholder="Juan Perez" required />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </fieldset>
+
+                    <fieldset class="mb-3">
+                        <label asp-for="Ci" class="form-label">Carnet</label>
+                        <input class="form-control" asp-for="Ci" type="text" placeholder="1234567" required />
+                        <span asp-validation-for="Ci" class="text-danger small"></span>
+                    </fieldset>
+
+                    <fieldset class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label">Número de Teléfono</label>
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="12345678" type="tel"/>
+                    </fieldset>
+
+                    <fieldset class="mb-3">
+                        <label asp-for="Address" class="form-label">Dirección</label>
+                        <input class="form-control" asp-for="Address" placeholder="Barrio Lindo" type="text" required/>
+                    </fieldset>
+
+                    <fieldset class="mb-4">
+                        <label asp-for="BirthDate" class="form-label">Fecha de Cumpleaños</label>
+                        <input class="form-control" asp-for="BirthDate" type="date" required/>
+                    </fieldset>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary fw-bold" type="submit">Guardar</button>
+                        <a asp-controller="Bakery" asp-action="Index" class="btn btn-outline-secondary">Volver al menú principal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabla de Clientes -->
+    <section class="col-lg-8">
+        <h3 class="h3 mb-3">Lista de Clientes</h3>
+
+        <div class="table-responsive rounded-3 border shadow-sm overflow-hidden bg-white">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-warning">
+                    <tr>
+                        <th scope="col" class="py-3">Nombre</th>
+                        <th scope="col" class="py-3">Carnet</th>
+                        <th scope="col" class="py-3">Teléfono</th>
+                        <th scope="col" class="py-3">Dirección</th>
+                        <th scope="col" class="py-3">Cumpleaños</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (customers != null && customers.Any())
+                    {
+                        @foreach (var cus in customers)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@cus.FullName</td>
+                                <td>@cus.Ci</td>
+                                <td>@cus.PhoneNumber</td>
+                                <td>@cus.Address</td>
+                                <td>@(cus.BirthDate.HasValue ? cus.BirthDate.Value.ToString("dd/MM/yyyy") : "-")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">No hay clientes registrados aún.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
