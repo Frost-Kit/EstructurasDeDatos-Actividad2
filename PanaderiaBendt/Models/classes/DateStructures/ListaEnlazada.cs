@@ -113,7 +113,7 @@ public class ListaEnlazada<T> : IListaEnlazada<T>
 
     public void EliminarEn(int indice)
     {
-        if (indice < 0 || indice > _cantidad)
+        if (indice < 0 || indice >= _cantidad)
         {
             Console.WriteLine("Indice fuera de rango");
             return;
@@ -131,7 +131,8 @@ public class ListaEnlazada<T> : IListaEnlazada<T>
         {
             Nodo<T> temporal = _inicio;
 
-            for (int i = 0; i < indice - 1; i++) temporal = temporal.Siguiente;
+            for (int i = 1; i < indice; i++)
+                temporal = temporal.Siguiente;
 
             temporal.Siguiente = temporal.Siguiente.Siguiente;
             _cantidad--;
@@ -177,7 +178,8 @@ public class ListaEnlazada<T> : IListaEnlazada<T>
             Nodo<T> nuevoNodo = new(elemento);
             Nodo<T> temporal = _inicio;
 
-            for (int i = 0; i < indice; i++) temporal = temporal.Siguiente;
+            for (int i = 1; i < indice; i++)
+                temporal = temporal.Siguiente;
 
             nuevoNodo.Siguiente = temporal.Siguiente;
             temporal.Siguiente = nuevoNodo;
@@ -198,11 +200,43 @@ public class ListaEnlazada<T> : IListaEnlazada<T>
 
     public void EliminarValor(T elemento)
     {
-        throw new NotImplementedException();
+        if (EsVacia()) return;
+
+        if (_inicio.Valor.Equals(elemento))
+        {
+            EliminarInicio();
+            return;
+        }
+
+        Nodo<T>? actual = _inicio;
+        while (actual.Siguiente != null)
+        {
+            if (actual.Siguiente.Valor.Equals(elemento))
+            {
+                actual.Siguiente = actual.Siguiente.Siguiente;
+                _cantidad--;
+                return;
+            }
+            actual = actual.Siguiente;
+        }
     }
 
     public void MostrarDatosInverso()
     {
         throw new NotImplementedException();
+    }
+    
+    public List<T> ObtenerListaIterable()
+    {
+        List<T> elementos = [];
+        
+        Nodo<T>? actual = _inicio;
+        while (actual != null)
+        {
+            elementos.Add(actual.Valor);
+            actual = actual.Siguiente;
+        }
+    
+        return elementos;
     }
 }
